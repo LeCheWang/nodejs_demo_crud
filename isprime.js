@@ -2,7 +2,7 @@ process.on("message", message => {
     
     const jsonResponse = isPrime(message.number);
     process.send(jsonResponse);
-    // process.exit();
+    process.exit();
 })
 
 

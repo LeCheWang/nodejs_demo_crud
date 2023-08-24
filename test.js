@@ -5,7 +5,12 @@ app.get("/isprime", (req, res) => {
     
     const childProcess = fork('./isprime.js');
     childProcess.send({"number": parseInt(req.query.number)})
-    childProcess.on("message", message => res.send(message))
+    childProcess.on("message", message => console.log(message))
+
+    return res.status(200).json({
+        statusCode: 200,
+        message: "running.."
+    })
 } )
 
 app.listen(8081, ()=>console.log("Listening on 8081") )
