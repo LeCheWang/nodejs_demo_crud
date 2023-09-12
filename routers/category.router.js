@@ -6,6 +6,8 @@ const {
   getCategories,
 } = require('../controllers/category.controller');
 
-router.route('/').post(createCategory).get(getCategories);
+const AsyncMiddleware = require("../middlewares/async.middleware")
+
+router.route('/').post(AsyncMiddleware(createCategory)).get(AsyncMiddleware(getCategories));
 
 module.exports = router;

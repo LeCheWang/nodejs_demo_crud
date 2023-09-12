@@ -6,6 +6,8 @@ const {
   createProduct,
 } = require('../controllers/product.controller');
 
-router.route('/:category_id').get(getProducts).post(createProduct);
+const AsyncMiddleware = require("../middlewares/async.middleware")
+
+router.route('/:category_id').get(AsyncMiddleware(getProducts)).post(AsyncMiddleware(createProduct));
 
 module.exports = router;
