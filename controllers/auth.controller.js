@@ -1,7 +1,10 @@
+require('dotenv').config();
 const bcryptjs = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
 const accountModel = require('../models/account.model');
 const accountValid = require('../validations/account.valid');
-const ErrorResponse = require("../helpers/ErrorResponse")
+const ErrorResponse = require('../helpers/ErrorResponse');
 
 module.exports = {
   register: async (req, res) => {
@@ -39,11 +42,21 @@ module.exports = {
     }
 
     //khi đã đúng tk và mk
-    //jwt
+    //npm i jwt
+    // localStorage, sessionStorage, cookies
+    const payload = {
+      _id: account._id,
+      username: account.username,
+      role: account.role,
+    };
+
+    const token = jwt.sign(payload, process.env.SECRET_KEY, {
+      expiresIn: process.env.EXPIRES_IN,
+    });
 
     return res.status(200).json({
-      statusCode: 200,
-      message: 'Đăng nhập thành công',
+      ...payload,
+      jwt: token,
     });
   },
 };

@@ -15,7 +15,27 @@ module.exports = {
     return res.status(200).json(newAccount);
   },
   getAccounts: async (req, res) => {
-    const accounts = await accountModel.find();
+    const fullName = req.query.fullName;
+    const username = req.query.username;
+    const role = req.query.role || 'user';
+
+    const bodyQuery = {
+      role: role,
+    };
+
+    if (fullName) {
+      bodyQuery.fullname = {
+        $regex: '.*' + fullName + '.*',
+      };
+    }
+
+    if (username) {
+      bodyQuery.username = {
+        $regex: '.*' + username + '.*',
+      };
+    }
+
+    const accounts = await accountModel.find(bodyQuery);
     return res.status(200).json(accounts);
   },
   updateAccount: async (req, res) => {
