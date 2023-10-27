@@ -1,12 +1,11 @@
-const express = require("express")
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
 
-const {
-    login,
-    register
-} = require("../controllers/auth.controller")
+const asyncMiddleware = require('../middlewares/async.middleware');
 
-router.route("/login").post(login)
-router.route("/register").post(register)
+const { login, register } = require('../controllers/auth.controller');
 
-module.exports = router
+router.route('/login').post(asyncMiddleware(login));
+router.route('/register').post(asyncMiddleware(register));
+
+module.exports = router;
