@@ -1,4 +1,7 @@
+require("dotenv").config();
 const bcryptjs = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
 const accountModel = require('../models/account.model');
 const accountValid = require('../validations/account.valid');
 const ErrorResponse = require('../helpers/ErrorResponse');
@@ -28,10 +31,19 @@ module.exports = {
     }
 
     //jwt
+    const payload = {
+      _id: account._id,
+      username: account.username,
+      role: account.role,
+    };
+
+    const token = jwt.sign(payload, process.env.SECRET_KEY, {
+      expiresIn: '15m',
+    });
 
     return res.status(200).json({
-      statusCode: 200,
-      message: 'Đăng nhập thành công!',
+      ...payload,
+      token: token,
     });
   },
   register: async (req, res) => {
