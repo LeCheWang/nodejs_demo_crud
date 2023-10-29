@@ -5,6 +5,8 @@ const router = require('./routers');
 
 app.use(express.json());
 
+app.use(express.static('./uploads'))
+
 connectDb();
 //cac api
 router(app);
