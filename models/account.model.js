@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcryptjs = require('bcryptjs');
+const typeRole = require('../constants/type.role');
 
 const accountSchame = mongoose.Schema(
   {
@@ -18,8 +19,8 @@ const accountSchame = mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['user', 'admin'],
-      default: 'user',
+      enum: Array.from(typeRole),
+      default: typeRole.USER,
     },
   },
   {
@@ -34,7 +35,6 @@ accountSchame.set('toJSON', {
     delete ret.password;
   },
 });
-
 
 //mã hóa mật khẩu trước khi lưu
 accountSchame.pre('save', function (next) {
